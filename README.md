@@ -41,35 +41,35 @@ This system uses a **multi-layered, microservices architecture** with **OpenAI a
 ```
 📦 hate-speech-detection/
 ├── 🧠 ai-backend/                    # Primary AI service
-│   ├── app.py                        # Main Flask application
-│   ├── config.py                     # Configuration settings
-│   ├── openai_detector.py            # OpenAI GPT integration
-│   ├── langchain_integration.py      # LangChain processing
-│   ├── rag_system.py                 # RAG knowledge system
-│   ├── backend_integration.py        # RoBERTa backend client
+│   ├── app.py                        
+│   ├── config.py                     
+│   ├── openai_detector.py           
+│   ├── langchain_integration.py      
+│   ├── rag_system.py                 
+│   ├── backend_integration.py        
 │   ├── requirements.txt              # AI backend dependencies
 │   └── data/                         # Knowledge base & feedback
 │
-├── 🤖 backend/                       # RoBERTa service  
-│   ├── app.py                        # Flask API server
-│   ├── inference_xlm_roberta.py      # XLM-RoBERTa inference
+├── 🤖 backend/                        
+│   ├── app.py                        
+│   ├── inference_xlm_roberta.py      
 │   ├── train_xlm_roberta.py          # Training pipeline
 │   ├── data_preprocessing_xlm_roberta.py
-│   ├── retrain_on_feedback.py        # Incremental training
+│   ├── retrain_on_feedback.py        
 │   ├── config_xlm_roberta.py         # RoBERTa configuration
 │   ├── datsets/                      # Training datasets
 │   ├── outputs_xlm_roberta/          # Model outputs
-│   └── feedback/                     # User feedback data
+│   └── feedback/                     
 │
 ├── 🌐 frontend/                      # Web interface
-│   └── index.html                    # Modern responsive UI
+│   └── index.html                    
 │
 ├── 🚀 start-all-services.bat         # Start complete system
 ├── 🚀 start-ai-backend.bat           # Start AI backend only  
 ├── 🚀 start-roberta-backend.bat      # Start RoBERTa backend only
 ├── 🚀 start-frontend.bat             # Open frontend only
-├── 📋 requirements.txt               # Main dependencies
-└── 📖 README.md                      # This file
+├── 📋 requirements.txt               
+└── 📖 README.md                      
 ```
 
 ---
@@ -233,7 +233,7 @@ User Feedback → AI Backend → RoBERTa Backend → Model Retraining
 ### Customizing Thresholds
 ```python
 # ai-backend/config.py
-HATE_THRESHOLD = 0.6  # Overall classification threshold
+HATE_THRESHOLD = 0.6  
 OPENAI_CONFIDENCE_WEIGHT = 0.4
 RAG_CONFIDENCE_WEIGHT = 0.3
 CONTEXT_CONFIDENCE_WEIGHT = 0.2  
@@ -342,3 +342,15 @@ This project is designed for research and educational purposes. When using in pr
 4. **Discussions**: Join community discussions
 
 ---
+
+## 📮 Support
+
+**📧 Email:** [k.b.ravindusankalpaac@gmail.com](mailto:k.b.ravindusankalpaac@gmail.com)  
+**🐞 Bug Reports:** [GitHub Issues](https://github.com/K-B-R-S-W/OpenAI_-_XLMR_Hate_Speech_Classifier_for_Sinhala/issues)  
+**📚 Documentation:** [Project Wiki](https://github.com/K-B-R-S-W/OpenAI_-_XLMR_Hate_Speech_Classifier_for_Sinhala/wiki)  
+**💭 Discussions:** [GitHub Discussions](https://github.com/K-B-R-S-W/OpenAI_-_XLMR_Hate_Speech_Classifier_for_Sinhala/discussions)  
+
+---
+
+## ⭐ Support This Project
+If you find this project helpful, please give it a **⭐ star** on GitHub — it motivates me to keep improving! 🚀
