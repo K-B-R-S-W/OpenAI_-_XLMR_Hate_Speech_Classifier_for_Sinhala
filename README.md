@@ -1,6 +1,6 @@
 # 🚫 AI-Powered Hate Speech Detection System
 
-**Advanced Multi-Model Architecture for Sinhala/Singlish Hate Speech Detection**
+**Advanced Multi Model Architecture for Sinhala/Singlish Hate Speech Detection**
 
 <p align="center">
   <img src="https://img.shields.io/badge/AI-OpenAI%20GPT-blue"/>
@@ -373,5 +373,6 @@ This project is designed for research and educational purposes. When using in pr
 
 ## ⭐ Support This Project
 If you find this project helpful, please give it a **⭐ star** on GitHub — it motivates me to keep improving! 🚀
+
 
 
