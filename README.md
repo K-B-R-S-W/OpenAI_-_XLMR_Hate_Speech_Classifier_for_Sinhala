@@ -35,8 +35,6 @@ This system uses a **multi-layered, microservices architecture** with **OpenAI a
 #### Not Working (Check System app.py)
 <img width="474" height="86" alt="Screenshot 2025-08-31 094048" src="https://github.com/user-attachments/assets/b5c00ce1-e0ce-4f32-b174-403b3f8e3796" />
 
-
-
 ### Detection Flow:
 1. **Primary**: OpenAI GPT-4 analyzes context and intent
 2. **Enhancement**: LangChain provides cultural context analysis
@@ -45,6 +43,17 @@ This system uses a **multi-layered, microservices architecture** with **OpenAI a
 5. **Aggregation**: Weighted confidence scoring across all methods
 
 ---
+
+
+### Examples:
+
+# 1
+
+<img width="1719" height="871" alt="Screenshot 2025-08-31 093657" src="https://github.com/user-attachments/assets/ac98670e-7550-45a4-9528-382b22f9d6cd" />
+
+# 2
+
+<img width="1227" height="501" alt="Screenshot 2025-08-31 093918" src="https://github.com/user-attachments/assets/095e6282-e16a-4986-b883-a8848ac31223" />
 
 ## 📁 Project Structure
 
@@ -364,4 +373,5 @@ This project is designed for research and educational purposes. When using in pr
 
 ## ⭐ Support This Project
 If you find this project helpful, please give it a **⭐ star** on GitHub — it motivates me to keep improving! 🚀
+
 
