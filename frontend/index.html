@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚫 AI-Powered Hate Speech Detection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .detection-section {
+            margin-bottom: 40px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #333;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .result-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 5px solid;
+            margin-bottom: 20px;
+        }
+
+        .result-hate {
+            border-left-color: #ff6b6b;
+            background: #fff5f5;
+        }
+
+        .result-safe {
+            border-left-color: #51cf66;
+            background: #f3fff3;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .confidence-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .confidence-high { background: #ff6b6b; }
+        .confidence-medium { background: #ffa502; }
+        .confidence-low { background: #2ed573; }
+
+        .methods-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .method-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #e1e5e9;
+        }
+
+        .method-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .method-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .method-confidence {
+            font-size: 0.9em;
+            padding: 3px 8px;
+            border-radius: 15px;
+            background: #e1e5e9;
+        }
+
+        .flagged-words {
+            margin-top: 15px;
+        }
+
+        .word-tag {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            margin: 2px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .status-bar {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-healthy { background: #51cf66; }
+        .status-error { background: #ff6b6b; }
+
+        .examples {
+            margin-top: 30px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .example-text {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .example-text:hover {
+            background: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚫 AI-Powered Hate Speech Detection</h1>
+            <p>Advanced multi model detection for Sinhala, Singlish text</p>
+        </div>
+
+        <div class="main-content">
+            <div class="status-bar" id="statusBar">
+                <div id="statusIndicator">
+                    <span class="status-indicator status-healthy"></span>
+                    <span>AI Backend: Healthy</span>
+                    <span style="margin-left: 20px;">
+                        <span class="status-indicator status-healthy"></span>
+                        <span>RoBERTa Backend: Healthy</span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="detection-section">
+                <div class="input-group">
+                    <label for="textInput">Enter text to analyze:</label>
+                    <textarea 
+                        id="textInput" 
+                        placeholder="Type or paste text here... (Supports Sinhala, Singlish, and English)"
+                        maxlength="1000"
+                    ></textarea>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-primary" onclick="detectHate()">
+                        🔍 Analyze Text
+                    </button>
+                    <button class="btn-secondary" onclick="clearResults()">
+                        🗑️ Clear
+                    </button>
+                    <button class="btn-danger" onclick="checkSystemStatus()">
+                        ⚡ System Status
+                    </button>
+                </div>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Analyzing with AI models...</p>
+            </div>
+
+            <div class="results" id="results">
+                <!-- Results will be inserted here -->
+            </div>
+
+            <div class="examples">
+                <h3>Example texts to try:</h3>
+                <div class="example-text" onclick="setExampleText('Hello, how are you today?')">
+                    💚 "Hello, how are you today?" (Safe text)
+                </div>
+                <div class="example-text" onclick="setExampleText('මම ඔබට උදව් කරන්නම්')">
+                    💚 "මම ඔබට උදව් කරන්නම්" (I will help you - Sinhala)
+                </div>
+                <div class="example-text" onclick="setExampleText('You are so stupid and worthless!')">
+                    ❤️ "You are so stupid and worthless!" (Potential hate speech)
+                </div>
+                <div class="example-text" onclick="setExampleText('මෝඩයා එතන යන්න')">
+                    ❤️ "මෝඩයා එතන යන්න" (Go there, idiot - Sinhala)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const AI_BACKEND_URL = 'http://localhost:8001';
+        
+        async function detectHate() {
+            const textInput = document.getElementById('textInput');
+            const text = textInput.value.trim();
+            
+            if (!text) {
+                alert('Please enter some text to analyze');
+                return;
+            }
+            
+            showLoading(true);
+            
+            try {
+                const response = await fetch(`${AI_BACKEND_URL}/detect`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text: text })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const result = await response.json();
+                displayResults(result);
+                
+            } catch (error) {
+                console.error('Detection error:', error);
+                displayError(error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        function displayResults(result) {
+            const resultsDiv = document.getElementById('results');
+            const isHate = result.is_hate;
+            const confidence = result.confidence;
+            
+            let confidenceClass = 'confidence-low';
+            if (confidence > 0.7) confidenceClass = 'confidence-high';
+            else if (confidence > 0.4) confidenceClass = 'confidence-medium';
+            
+            let html = `
+                <div class="result-card ${isHate ? 'result-hate' : 'result-safe'}">
+                    <div class="result-header">
+                        <h3>${isHate ? '⚠️ Hate Speech Detected' : '✅ Text Appears Safe'}</h3>
+                        <span class="confidence-badge ${confidenceClass}">
+                            ${(confidence * 100).toFixed(1)}% confidence
+                        </span>
+                    </div>
+                    
+                    <p><strong>Text:</strong> "${result.text}"</p>
+                    
+                    <div class="methods-breakdown">
+                        <div class="method-card">
+                            <div class="method-header">
+                                <span class="method-name">🧠 OpenAI GPT</span>
+                                <span class="method-confidence">${(result.methods.openai.confidence * 100).toFixed(1)}%</span>
+                            </div>
+                            <p><strong>Decision:</strong> ${result.methods.openai.is_hate ? 'HATE' : 'SAFE'}</p>
+                            <p><strong>Reason:</strong> ${result.methods.openai.reason.substring(0, 100)}...</p>
+                            ${result.methods.openai.flagged_words.length > 0 ? `
+                                <div class="flagged-words">
+                                    <strong>Flagged words:</strong><br>
+                                    ${result.methods.openai.flagged_words.map(word => 
+                                        `<span class="word-tag">${word}</span>`
+                                    ).join('')}
+                                </div>
+                            ` : ''}
+                        </div>
+                        
+                        <div class="method-card">
+                            <div class="method-header">
+                                <span class="method-name">🔗 RAG System</span>
+                                <span class="method-confidence">${(result.methods.rag.confidence * 100).toFixed(1)}%</span>
+                            </div>
+                            <p><strong>Decision:</strong> ${result.methods.rag.is_hate ? 'HATE' : 'SAFE'}</p>
+                            <p><strong>Patterns matched:</strong> ${result.methods.rag.matched_patterns.length}</p>
+                        </div>
+                        
+                        <div class="method-card">
+                            <div class="method-header">
+                                <span class="method-name">🧠 Context Analysis</span>
+                                <span class="method-confidence">${(result.methods.context.confidence * 100).toFixed(1)}%</span>
+                            </div>
+                            <p><strong>Sentiment:</strong> ${result.methods.context.sentiment}</p>
+                            <p><strong>Context flags:</strong> ${result.methods.context.context_flags.length}</p>
+                        </div>
+                        
+                        <div class="method-card">
+                            <div class="method-header">
+                                <span class="method-name">🤖 XLM-RoBERTa</span>
+                                <span class="method-confidence">${(result.methods.roberta.confidence * 100).toFixed(1)}%</span>
+                            </div>
+                            <p><strong>Decision:</strong> ${result.methods.roberta.is_hate ? 'HATE' : 'SAFE'}</p>
+                            ${result.methods.roberta.hate_words.length > 0 ? `
+                                <div class="flagged-words">
+                                    <strong>Detected words:</strong><br>
+                                    ${result.methods.roberta.hate_words.map(word => 
+                                        `<span class="word-tag">${word}</span>`
+                                    ).join('')}
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            resultsDiv.innerHTML = html;
+            resultsDiv.style.display = 'block';
+        }
+        
+        function displayError(errorMessage) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <div class="result-card result-hate">
+                    <h3>❌ Error</h3>
+                    <p><strong>Failed to analyze text:</strong> ${errorMessage}</p>
+                    <p>Please check if the AI backend service is running on port 8001.</p>
+                </div>
+            `;
+            resultsDiv.style.display = 'block';
+        }
+        
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+        }
+        
+        function clearResults() {
+            document.getElementById('textInput').value = '';
+            document.getElementById('results').style.display = 'none';
+        }
+        
+        function setExampleText(text) {
+            document.getElementById('textInput').value = text;
+        }
+        
+        async function checkSystemStatus() {
+            const statusBar = document.getElementById('statusBar');
+            statusBar.style.display = 'block';
+            
+            try {
+                // Check AI backend
+                const aiResponse = await fetch(`${AI_BACKEND_URL}/`);
+                const aiHealthy = aiResponse.ok;
+                
+                // Check RoBERTa backend via AI backend
+                const statsResponse = await fetch(`${AI_BACKEND_URL}/stats`);
+                const stats = await statsResponse.json();
+                
+                updateStatusIndicator(aiHealthy, stats.roberta_backend_status);
+                
+            } catch (error) {
+                updateStatusIndicator(false, false);
+            }
+        }
+        
+        function updateStatusIndicator(aiHealthy, robertaHealthy) {
+            const statusDiv = document.getElementById('statusIndicator');
+            statusDiv.innerHTML = `
+                <span class="status-indicator ${aiHealthy ? 'status-healthy' : 'status-error'}"></span>
+                <span>AI Backend: ${aiHealthy ? 'Healthy' : 'Error'}</span>
+                <span style="margin-left: 20px;">
+                    <span class="status-indicator ${robertaHealthy ? 'status-healthy' : 'status-error'}"></span>
+                    <span>RoBERTa Backend: ${robertaHealthy ? 'Healthy' : 'Error'}</span>
+                </span>
+            `;
+        }
+        
+        // Auto-check status on page load
+        window.addEventListener('load', checkSystemStatus);
+        
+        // Enable Enter key to submit
+        document.getElementById('textInput').addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                detectHate();
+            }
+        });
+    </script>
+</body>
+</html>

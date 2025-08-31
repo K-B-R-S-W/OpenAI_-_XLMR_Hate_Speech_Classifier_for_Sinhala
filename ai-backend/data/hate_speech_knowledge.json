@@ -1,0 +1,106 @@
+[
+  {
+    "id": "racial_slur_1",
+    "pattern": "racial slurs and ethnic discrimination",
+    "category": "racial_hatred",
+    "severity": "high",
+    "language": "english",
+    "examples": [
+      "racial slurs",
+      "ethnic discrimination",
+      "racist language"
+    ],
+    "confidence": 0.9
+  },
+  {
+    "id": "threat_1",
+    "pattern": "violent threats and intimidation",
+    "category": "threats",
+    "severity": "high",
+    "language": "english",
+    "examples": [
+      "I will hurt you",
+      "you deserve to die",
+      "kill yourself"
+    ],
+    "confidence": 0.95
+  },
+  {
+    "id": "sinhala_curse_1",
+    "pattern": "සිංහල අපශබ්ද වචන",
+    "category": "profanity",
+    "severity": "medium",
+    "language": "sinhala",
+    "examples": [
+      "හුත්තො",
+      "පකයා",
+      "වේසියා"
+    ],
+    "confidence": 0.8
+  },
+  {
+    "id": "sinhala_insult_1",
+    "pattern": "පෞරුෂත්වයට අභියෝග කරන වචන",
+    "category": "personal_attacks",
+    "severity": "medium",
+    "language": "sinhala",
+    "examples": [
+      "මෝඩයා",
+      "බල්ලා",
+      "ගහනවා"
+    ],
+    "confidence": 0.7
+  },
+  {
+    "id": "singlish_1",
+    "pattern": "singlish offensive terms",
+    "category": "mixed_language_hate",
+    "severity": "medium",
+    "language": "singlish",
+    "examples": [
+      "pakaya mokada",
+      "hora minihek",
+      "ballage puthaa"
+    ],
+    "confidence": 0.75
+  },
+  {
+    "id": "cyberbully_1",
+    "pattern": "cyberbullying and harassment",
+    "category": "harassment",
+    "severity": "medium",
+    "language": "english",
+    "examples": [
+      "nobody likes you",
+      "you are worthless",
+      "go kill yourself"
+    ],
+    "confidence": 0.85
+  },
+  {
+    "id": "gender_hate_1",
+    "pattern": "gender-based harassment",
+    "category": "gender_violence",
+    "severity": "high",
+    "language": "english",
+    "examples": [
+      "women belong in kitchen",
+      "stupid female",
+      "sexist remarks"
+    ],
+    "confidence": 0.9
+  },
+  {
+    "id": "religious_1",
+    "pattern": "religious intolerance",
+    "category": "religious_hatred",
+    "severity": "high",
+    "language": "mixed",
+    "examples": [
+      "religious slurs",
+      "infidel",
+      "religious discrimination"
+    ],
+    "confidence": 0.88
+  }
+]
